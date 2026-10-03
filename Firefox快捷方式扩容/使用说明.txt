@@ -1,0 +1,46 @@
+﻿============================================================
+ Firefox 新标签页快捷方式扩容 - 使用说明
+============================================================
+
+【功能】
+- 新标签页（about:newtab / about:home）快捷方式突破官方 8 列 × 4 行限制
+- 每行可选 8 / 10 / 12 / 14 / 16 个，行数可选 1 ~ 8 行
+- 右下角铅笔（定制）面板里直接控制：开关、行数、每行数量
+- 首次安装默认：每行 12 个 × 6 行
+- 你原来的快捷方式（固定的网站）完全保留，扩容只是增加空槽位；
+  以后调小数量也只是隐藏、不会删除
+
+【安装】
+1. 关闭 Firefox（不关也行，装完重启才生效）
+2. 右键“安装.bat”→ 以管理员身份运行（会弹 UAC，点是）
+   · Firefox 装在其他盘时：把 Firefox 安装文件夹拖到 安装.bat 上
+3. 启动 Firefox，打开新标签页即可看到效果
+
+【迁移到新电脑 / 重装系统后】
+1. 装好官方 Firefox
+2. 把整个“Firefox快捷方式扩容”文件夹复制到任意位置
+3. 再次以管理员身份运行“安装.bat” → 完成（无需联网）
+
+【Firefox 更新后】
+- 正常在线更新：功能自动保留，无需任何操作
+- 覆盖重装 Firefox：重新运行一次 安装.bat 即可
+
+【卸载】
+- 以管理员身份运行“卸载.bat”
+- 数量设置本身是 Firefox 官方 pref，卸载后仍在 about:config 中，
+  搜 topSitesRows / topSitesMaxSitesPerRow 可手动重置
+
+【原理（抗更新的原因）】
+- 数量由 Firefox 官方 pref 驱动（topSitesRows、topSitesMaxSitesPerRow），
+  存在你的配置文件里，更新不会动
+- 布局用官方预留的 CSS 变量 --top-sites-max-per-row，
+  通过配置文件夹里的 userContent.css 全宽度启用
+- 面板增强由 fx-autoconfig（userChromeJS 加载器）注入，
+  加载器文件在 Firefox 安装目录，更新程序不认识它们、不会删
+- 三层结构互相独立，任何一层失效都不会影响其他层
+
+【文件清单】
+program\            → 复制到 C:\Program Files\Mozilla Firefox\
+profile\            → 复制到配置文件目录（脚本自动定位）
+安装.bat / 卸载.bat  自提权安装/卸载脚本
+Ref 与许可：fx-autoconfig 来自 github.com/MrOtherGuy/fx-autoconfig（MPL-2.0）

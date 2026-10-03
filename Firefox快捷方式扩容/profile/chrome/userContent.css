@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Firefox 快捷方式扩容 - userContent.css
+   作用：
+   1. 让 Firefox 官方预留的 CSS 变量 --top-sites-max-per-row（由 pref
+      browser.newtabpage.activity-stream.topSitesMaxSitesPerRow 驱动）
+      在所有宽度下生效（官方样式只在视口 >= 1390px 时才使用这个变量）。
+   2. 当每行数量超过 8 个时，自动加宽页面主体容器，防止网格溢出。
+      --mst-cols 变量由 MoreShortcuts 内容脚本写入 documentElement，
+      未运行时按 8 列回退，布局与官方完全一致。
+   ========================================================================== */
+
+@-moz-document url-prefix("about:newtab"), url-prefix("about:home") {
+
+  /* 宽屏下每行数量完全由变量决定（<1122px 保留官方 3/6 列响应式行为） */
+  @media (min-width: 1122px) {
+    .top-sites-list {
+      grid-template-columns: repeat(var(--top-sites-max-per-row, 8), auto) !important;
+    }
+
+    /* 经典布局（未启用 Discovery Stream）：主区域默认 1042px */
+    main.newtab-main {
+      width: max(1042px, min(calc(var(--mst-cols, 8) * 120px + 24px), 96vw)) !important;
+    }
+
+    /* Discovery Stream 布局：body-wrapper 默认 989px（>=1698px 时 1311px） */
+    .ds-outer-wrapper-breakpoint-override main.newtab-main .body-wrapper {
+      width: max(989px, min(calc(var(--mst-cols, 8) * 120px + 24px), 96vw)) !important;
+    }
+  }
+
+  @media (min-width: 1698px) {
+    .ds-outer-wrapper-breakpoint-override main.newtab-main .body-wrapper {
+      width: max(1311px, min(calc(var(--mst-cols, 8) * 120px + 24px), 96vw)) !important;
+    }
+  }
+}
